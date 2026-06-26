@@ -807,10 +807,14 @@ async function uploadZippyshare(stream) {
         return res.data;
 }
 
+const DRIVE_DISABLED_ERR = new Error("Google Drive is disabled — set clientId, clientSecret and refreshToken in config.json to enable it");
+DRIVE_DISABLED_ERR.name = "DRIVE_DISABLED";
+
 const drive = {
         default: driveApi,
         parentID: "",
         async uploadFile(fileName, mimeType, file) {
+                if (!driveApi) throw DRIVE_DISABLED_ERR;
                 if (!file && typeof fileName === "string") {
                         file = mimeType;
                         mimeType = undefined;
@@ -830,13 +834,14 @@ const drive = {
                         })).data;
                 }
                 catch (err) {
-                        throw new Error(err.errors.map(e => e.message).join("\n"));
+                        throw new Error((err.errors || [{ message: err.message }]).map(e => e.message).join("\n"));
                 }
                 await utils.drive.makePublic(response.id);
                 return response;
         },
 
         async deleteFile(id) {
+                if (!driveApi) throw DRIVE_DISABLED_ERR;
                 if (!id || typeof id !== "string")
                         throw new Error('The first argument (id) must be a string');
                 try {
@@ -846,7 +851,7 @@ const drive = {
                         return true;
                 }
                 catch (err) {
-                        throw new Error(err.errors.map(e => e.message).join("\n"));
+                        throw new Error((err.errors || [{ message: err.message }]).map(e => e.message).join("\n"));
                 }
         },
 
@@ -857,6 +862,7 @@ const drive = {
         },
 
         async getFile(id, responseType) {
+                if (!driveApi) throw DRIVE_DISABLED_ERR;
                 if (!id || typeof id !== "string")
                         throw new Error('The first argument (id) must be a string');
                 if (!responseType)
@@ -884,6 +890,7 @@ const drive = {
         },
 
         async getFileName(id) {
+                if (!driveApi) throw DRIVE_DISABLED_ERR;
                 if (!id || typeof id !== "string")
                         throw new Error('The first argument (id) must be a string');
                 const { fileNames: tempFileNames } = global.temp.filesOfGoogleDrive;
@@ -898,11 +905,12 @@ const drive = {
                         return response.name;
                 }
                 catch (err) {
-                        throw new Error(err.errors.map(e => e.message).join("\n"));
+                        throw new Error((err.errors || [{ message: err.message }]).map(e => e.message).join("\n"));
                 }
         },
 
         async makePublic(id) {
+                if (!driveApi) throw DRIVE_DISABLED_ERR;
                 if (!id || typeof id !== "string")
                         throw new Error('The first argument (id) must be a string');
                 try {
@@ -916,13 +924,14 @@ const drive = {
                         return id;
                 }
                 catch (err) {
-                        const error = new Error(err.errors.map(e => e.message).join("\n"));
+                        const error = new Error((err.errors || [{ message: err.message }]).map(e => e.message).join("\n"));
                         error.name = 'CAN\'T_MAKE_PUBLIC';
-                        throw new Error(err.errors.map(e => e.message).join("\n"));
+                        throw error;
                 }
         },
 
         async checkAndCreateParentFolder(folderName) {
+                if (!driveApi) throw DRIVE_DISABLED_ERR;
                 if (!folderName || typeof folderName !== "string")
                         throw new Error('The first argument (folderName) must be a string');
                 let parentID;
@@ -955,7 +964,7 @@ const drive = {
                                         type: 'anyone'
                                 }
                         });
-                        parentID = parentFolder.data.id;
+                        parentID = parentFolder.id;
                 }
                 else
                         parentID = parentFolder.id;
