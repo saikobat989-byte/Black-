@@ -5,8 +5,8 @@
     "2FASecret": "",
     "i_user": "",
     "proxy": null,
-    "userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.60 Mobile Safari/537.36",
-    "intervalGetNewCookie": 1440,
+    "userAgent": "Mozilla/5.0 (Linux; Android 14; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36",
+    "intervalGetNewCookie": 720,
     "notes": "Automatically retrieves new cookies every x minutes. Recommended: 1440 (1 day)."
   },
   "antiInbox": false,
@@ -160,7 +160,7 @@
     "forceLogin": true,
     "listenEvents": true,
     "updatePresence": false,
-    "listenTyping": true,
+    "listenTyping": false,
     "selfListen": false,
     "selfListenEvent": true,
     "autoReconnect": true
