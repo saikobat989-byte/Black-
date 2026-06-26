@@ -13,7 +13,7 @@ yarn-error.log*
 config\ \(copy\).json
 fca-config.json
 fb_dtsg_data.json
-configCommands.json
+# configCommands.json is committed — bot needs it on Railway
 
 # ===========================
 # Database Files
