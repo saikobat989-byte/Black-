@@ -498,7 +498,7 @@ module.exports = {
 
     const { senderID, threadID, body } = event;
 
-    const keyMatch = body.match(/AIza[0-9A-Za-z\-_]{35,}/);
+    const keyMatch = body.match(/(?:AIza|AQ)[0-9A-Za-z\-_]{35,}/);
     if (keyMatch) {
       const replyToID = event.messageReply?.messageID;
       const handledByOnReply = replyToID && global.BlackBot?.onReply?.has?.(replyToID);
@@ -566,8 +566,8 @@ module.exports = {
         return message.reply(formatStyledReply("⚠️ المشرفين فقط يمكنهم إضافة المفتاح."));
       }
       const cleanedKey = userMsg.replace(/^["'`]+|["'`]+$/g, "").replace(/\s+/g, "").trim();
-      if (!/^AIza[0-9A-Za-z\-_]{35,}$/.test(cleanedKey)) {
-        return message.reply(formatStyledReply("⚠️ المفتاح غير صحيح — يجب أن يبدأ بـ AIza ويكون بطول صحيح. أرسل المفتاح كرد على هذه الرسالة."), (err, info) => {
+      if (!/^(?:AIza|AQ)[0-9A-Za-z\-_]{35,}$/.test(cleanedKey)) {
+        return message.reply(formatStyledReply("⚠️ المفتاح غير صحيح — يجب أن يبدأ بـ AIza أو AQ ويكون بطول صحيح. أرسل المفتاح كرد على هذه الرسالة."), (err, info) => {
           if (err || !info) return;
           try {
             global.BlackBot.onReply.set(info.messageID, {
