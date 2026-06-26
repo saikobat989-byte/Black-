@@ -1,7 +1,7 @@
 {
   "facebookAccount": {
-    "email": "sximsxint@gmail.com",
-    "password": "HHHSAIM",
+    "email": "",
+    "password": "",
     "2FASecret": "",
     "i_user": "",
     "proxy": null,
@@ -35,11 +35,6 @@
     ]
   },
   "adminBot": [
-    "100000522643032",
-    "100000522643032",
-    "100000522643032",
-    "100000522643032",
-    "100000522643032",
     "100000522643032"
   ],
   "reactUnsend": {
@@ -53,10 +48,7 @@
   },
   "blackListMode": {
     "enable": false,
-    "blackListIds": [
-      "100083039411474",
-      "100063840894133"
-    ],
+    "blackListIds": [],
     "notes": "If enabled, only IDs in blackListIds can use the bot."
   },
   "blackListModeThread": {
@@ -73,19 +65,19 @@
   },
   "timeZone": "Asia/Dhaka",
   "apiKeys": {
-    "groq": "AIzaSyBIFkyXL-Af8Ts186S5U2fPl3r-Ik9XInM"
+    "groq": ""
   },
   "credentials": {
     "gmailAccount": {
-      "email": "botofnexxo@gmail.com",
-      "clientId": "848792512039-g3mlfd39p9ttu82ga4kahk6kadjr0hcp.apps.googleusercontent.com",
-      "clientSecret": "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",
-      "refreshToken": " ",
-      "apiKey": "AIzaSyBIFkyXL-Af8Ts186S5U2fPl3r-Ik9XInM"
+      "email": "",
+      "clientId": "",
+      "clientSecret": "",
+      "refreshToken": "",
+      "apiKey": ""
     },
     "gRecaptcha": {
-      "siteKey": "6LfU0TUrAAAAAJVy_tm-q9xlEIEeyBK4N8VwuGdZ",
-      "secretKey": "6LfU0TUrAAAAAOR_CE7oZV-8Eo83LsJmb12-lWFb"
+      "siteKey": "",
+      "secretKey": ""
     }
   },
   "dashBoard": {
@@ -173,5 +165,5 @@
     "selfListenEvent": true,
     "autoReconnect": true
   },
-  "GEMINI_API_KEY": "AIzaSyCbvhwHOvGqmMTiQRj8wWKv0yO4y2qZeDE"
+  "GEMINI_API_KEY": ""
 }
