@@ -12,8 +12,13 @@ RUN apt-get update && apt-get install -y \
     libgif-dev \
     librsvg2-dev \
     libpixman-1-dev \
+    libpng-dev \
     fontconfig \
     fonts-freefont-ttf \
+    ffmpeg \
+    git \
+    curl \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -21,8 +26,8 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN rm -f package-lock.json && \
-    npm install --legacy-peer-deps && \
-    npm rebuild sqlite3 --build-from-source
+    npm install --legacy-peer-deps --no-fund --no-audit && \
+    npm rebuild canvas sqlite3 --build-from-source
 
 COPY . .
 
