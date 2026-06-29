@@ -85,11 +85,9 @@ if (config.blackListMode?.blackListIds && Array.isArray(config.blackListMode.bla
         config.blackListMode.blackListIds = config.blackListMode.blackListIds.map(id => id.toString());
 
 if (config.optionsFca) {
-        config.optionsFca.updatePresence    = false;
-        config.optionsFca.listenTyping      = false;
-        config.optionsFca.online            = false;
-        config.optionsFca.autoMarkDelivery  = false;
-        config.optionsFca.autoMarkRead      = false;
+        config.optionsFca.updatePresence = false;
+        config.optionsFca.listenTyping   = false;
+        config.optionsFca.online         = false;
 }
 const configCommands = require(dirConfigCommands);
 

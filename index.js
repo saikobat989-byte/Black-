@@ -47,7 +47,7 @@ function startProject() {
   child.on("close", (code, signal) => {
     const uptime = Date.now() - spawnTime;
     const reason = signal ? `signal ${signal}` : `exit code ${code}`;
-    const isRequested = (code == 2);
+    const isRequested = (code == 2) && uptime > LOGIN_FAIL_THRESHOLD_MS;
 
     const isLoginFail = !isRequested && uptime < LOGIN_FAIL_THRESHOLD_MS;
 
