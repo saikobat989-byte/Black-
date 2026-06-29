@@ -484,11 +484,8 @@ module.exports = {
     guide: { ar: "{p}{n} [رسالتك]" }
   },
 
-  onStart: async function ({ api, event, args, message }) {
-    const { threadID, messageID, senderID } = event;
-    const userMsg = args.join(" ").trim();
-    if (!userMsg) return message.reply(formatStyledReply("واش تبي؟"));
-    await handleAIMessage({ api, event, userMsg, message, commandName: "بلاك-ai", senderID, threadID });
+  onStart: async function () {
+    return;
   },
 
   onChat: async function ({ api, event, message }) {
@@ -522,6 +519,20 @@ module.exports = {
       }
     }
 
+    const prefix = global.BlackBot?.config?.prefix || ".";
+    const threadPrefix = (global.BlackBot?.threads?.get?.(threadID)?.data?.prefix) || prefix;
+
+    function isPrefixCommand(text) {
+      const usedPrefix = text.startsWith(threadPrefix) ? threadPrefix
+        : text.startsWith(prefix) ? prefix : null;
+      if (!usedPrefix) return false;
+      const firstWord = text.slice(usedPrefix.length).trim().split(/\s+/)[0]?.toLowerCase();
+      if (!firstWord) return false;
+      const cmds = global.BlackBot?.commands;
+      const aliases = global.BlackBot?.aliases;
+      return !!(cmds?.has?.(firstWord) || (aliases?.has?.(firstWord) && cmds?.has?.(aliases.get(firstWord))));
+    }
+
     if (event.messageReply && event.messageReply.senderID === api.getCurrentUserID()) {
       const replyMsgID = event.messageReply.messageID;
       const alreadyTracked = global.BlackBot?.onReply?.has?.(replyMsgID);
@@ -529,24 +540,16 @@ module.exports = {
 
       const userMsg = (body || "").trim();
       if (!userMsg) return;
-
-      try {
-        const prefix = global.BlackBot?.config?.prefix || ".";
-        const threadPrefix = (global.BlackBot?.threads?.get?.(threadID)?.data?.prefix) || prefix;
-        const usedPrefix = userMsg.startsWith(threadPrefix) ? threadPrefix
-          : userMsg.startsWith(prefix) ? prefix : null;
-        if (usedPrefix) {
-          const firstWord = userMsg.slice(usedPrefix.length).trim().split(/\s+/)[0]?.toLowerCase();
-          if (firstWord) {
-            const cmds = global.BlackBot?.commands;
-            const aliases = global.BlackBot?.aliases;
-            const isCommand = cmds?.has?.(firstWord) || (aliases?.has?.(firstWord) && cmds?.has?.(aliases.get(firstWord)));
-            if (isCommand) return;
-          }
-        }
-      } catch (_) {}
+      if (isPrefixCommand(userMsg)) return;
 
       await handleAIMessage({ api, event, userMsg, message, commandName: "بلاك-ai", senderID, threadID });
+      return;
+    }
+
+    const bodyLower = body.toLowerCase();
+    const mentionsBot = /\bبلاك\b|\bblack\b/.test(body) || bodyLower.includes("بلاك") || bodyLower.includes("black");
+    if (mentionsBot && !isPrefixCommand(body)) {
+      await handleAIMessage({ api, event, userMsg: body.trim(), message, commandName: "بلاك-ai", senderID, threadID });
     }
   },
 
