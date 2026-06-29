@@ -1,7 +1,7 @@
 {
   "autoUpdate": true,
   "autoLogin": true,
-  "mqtt": { "enabled": true, "reconnectInterval": 3600 },
+  "mqtt": { "enabled": true, "reconnectInterval": 1800 },
   "credentials": {
     "email": "sximsxint@gmail.com",
     "password": "HHHSAIM",

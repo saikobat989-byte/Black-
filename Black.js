@@ -83,6 +83,14 @@ if (process.env.GOOGLE_API_KEY) {
 }
 if (config.blackListMode?.blackListIds && Array.isArray(config.blackListMode.blackListIds))
         config.blackListMode.blackListIds = config.blackListMode.blackListIds.map(id => id.toString());
+
+if (config.optionsFca) {
+        config.optionsFca.updatePresence    = false;
+        config.optionsFca.listenTyping      = false;
+        config.optionsFca.online            = false;
+        config.optionsFca.autoMarkDelivery  = false;
+        config.optionsFca.autoMarkRead      = false;
+}
 const configCommands = require(dirConfigCommands);
 
 global.BlackBot = {
