@@ -73,7 +73,43 @@ function startProject() {
   });
 }
 
+function startInstagram() {
+  if (!process.env.IG_USERNAME || !process.env.IG_PASSWORD) {
+    log.info("[IG-BOT] IG_USERNAME/IG_PASSWORD not set — Instagram bot skipped.");
+    return;
+  }
+  let igSpawnTime = Date.now();
+  let igFails = 0;
+
+  function spawnIg() {
+    igSpawnTime = Date.now();
+    const ig = spawn("node", ["instagram/bot.js"], {
+      cwd: __dirname,
+      stdio: "inherit",
+      shell: false,
+      env: { ...process.env }
+    });
+    ig.on("close", (code) => {
+      const up = Date.now() - igSpawnTime;
+      const isQuick = up < 90000;
+      if (isQuick) igFails++;
+      else igFails = 0;
+      const delay = isQuick
+        ? Math.min(30 * 60 * 1000, (igFails * 10 * 60 * 1000) + Math.random() * 60000)
+        : 10000;
+      log.info(`[IG-BOT] Exited. Retry in ${Math.round(delay / 1000)}s…`);
+      setTimeout(spawnIg, delay);
+    });
+    ig.on("error", (e) => {
+      log.info(`[IG-BOT] Spawn error: ${e.message}. Retry in 15s…`);
+      setTimeout(spawnIg, 15000);
+    });
+  }
+  spawnIg();
+}
+
 startProject();
+startInstagram();
 
 setInterval(() => {
   if (typeof global.gc === "function") {
